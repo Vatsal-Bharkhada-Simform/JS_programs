@@ -1,5 +1,5 @@
 function deepCompare(obj1, obj2) {
-    if (!obj1 || !obj2 ) return (obj1 === obj2);
+    if (!obj1 || !obj2 || typeof obj1 !== 'object' || typeof obj2 !== 'object') return obj1 === obj2;
     else if (typeof obj1 === 'function') return true;
     else if (typeof obj1 !== 'object') return (obj1 === obj2);
     else if (obj1 instanceof Map && !deepCompare([...obj1.entries()], [...obj2.entries()])) return false;
@@ -9,7 +9,10 @@ function deepCompare(obj1, obj2) {
         if(obj1.length !== obj2.length) return false;
         for(let i = 0 ; i < obj1.length ; i++) if(!deepCompare(obj1[i], obj2[i])) return false;
     }
-    else if (typeof obj1 === 'object') for(let key of Object.keys(obj1)) if(!deepCompare(obj1[key], obj2[key])) return false;
+    else if (typeof obj1 === 'object') {
+        if(!deepCompare([...Object.keys(obj1)], [...Object.keys(obj2)])) return false;
+        for(let key of Object.keys(obj1)) if(!deepCompare(obj1[key], obj2[key])) return false;
+    }
     return true;
 }
 
@@ -65,6 +68,7 @@ let obj2 = {
         }
     },
     highlighted: true,
+    // abc: "def",
     getInfo() {
         return `${this.title} is written by ${this.author.join(" and ")}, published in ${this.publicationDate.slice(0, 4)}.`
     }

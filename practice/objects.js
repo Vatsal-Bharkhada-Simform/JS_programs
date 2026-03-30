@@ -28,6 +28,11 @@ let obj = {
     }
 };
 
+let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
+clone.thirdParty.goodreads.rating = 0;
+console.log("OBJ:", obj);
+console.log("CLONE:", clone);
+
 
 //------------------------------------------------------------------------------------//
 
@@ -112,3 +117,25 @@ console.log("Array: ", Object.entries(objToArr));
 console.log("\n========= Array to Object using Object.fromEntries(obj) ==========\n");
 console.log("Array: ", arrToObj);
 console.log("Object: ", Object.fromEntries(arrToObj));
+
+
+//------------------------------------------------------------------------------------//
+
+console.log("\n===============================================");
+console.log("Configuring Object Properties");
+console.log("===============================================");
+
+let obj1 = {
+    date: new Date()
+}
+
+Object.defineProperty(obj1, "date", {
+    writable: false,
+    enumerable: false,
+    configurable: false,
+})
+
+console.log(Object.getOwnPropertyDescriptor(obj1, "date"));
+
+
+//------------------------------------------------------------------------------------//
